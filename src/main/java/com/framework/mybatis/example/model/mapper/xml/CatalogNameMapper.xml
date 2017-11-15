@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.framework.mybatis.example.model.mappers.ICatalogNameMapper">
+
+	<resultMap type="com.framework.mybatis.example.model.CatalogName" id="catalogNameMap">
+		<result column="catalogname_id" property="id"/> 
+	</resultMap>
+	
+	<insert id="addCatalogName" parameterType="com.framework.mybatis.example.model.CatalogName">
+	
+		<selectKey keyProperty="id" resultType="Integer" order="BEFORE">
+			SELECT NEXTVAL('sequence_name')
+		</selectKey>
+		
+		INSERT INTO schema.table_name VALUES
+			(#{id}, #{description});
+	</insert>
+	
+	<delete id="removeCatalogName">
+		DELETE FROM schema.table_name where catalogname_id = #{id};
+	</delete>
+	
+	<update id="editCatalogName" parameterType="com.framework.mybatis.example.model.CatalogName">
+		UPDATE schema.table_name
+			SET description = #{description}
+		WHERE catalogname_id = #{id}; 
+	</update>
+	
+	<select id="findCatalogNames" resultMap="catalogNameMap">
+		SELECT
+			catalogname_id, 
+			description
+		FROM schema.table_name
+		WHERE 1 = 1
+		
+		<if test="id != null">
+			AND catalogname_id = #{id} 
+		</if>
+	</select>
+	
+</mapper>
